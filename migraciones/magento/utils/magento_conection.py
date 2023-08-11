@@ -63,3 +63,26 @@ def create():
             imagen2=imagen2,
             category_list=category_list,
         )
+
+
+def description_color():
+    colors = [
+        "rojo",
+        "azul",
+        "verde",
+        "amarillo",
+        "Negro",
+        "Multiplicar",
+        "Blanco y negro",
+    ]
+    magento_products = MagentoProducts.objects.all()[:10]
+    for products in magento_products:
+        description = products.description
+        print(description)
+        contain = []
+        for color in colors:
+            if color in description:
+                contain.append(color)
+                print(contain)
+        products.color = contain
+        products.save()

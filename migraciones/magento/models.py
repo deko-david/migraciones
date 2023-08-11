@@ -106,6 +106,10 @@ class MagentoProducts(models.Model):
         max_length=255,
         null=True,
     )
+    color = models.JSONField(
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         """Meta definition for MagentoProducts."""
