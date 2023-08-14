@@ -101,9 +101,8 @@ class MagentoProducts(models.Model):
         max_length=255,
         null=True,
     )
-    category_list = models.CharField(
+    category_list = models.TextField(
         help_text="category_list",
-        max_length=255,
         null=True,
     )
     color = models.JSONField(

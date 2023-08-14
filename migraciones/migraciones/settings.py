@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_json_widget",
     "django_extensions",
+    "import_export",
     "magento",
 ]
 
