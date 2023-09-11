@@ -1,0 +1,247 @@
+import re
+from magento.models import MagentoProducts
+
+BRAND_LIST = [
+    "Areas",
+    "Eglo",
+    "Essenza",
+    "MR. Wonderful",
+    "Karytex",
+    "Mulikka",
+    "Peleg Design",
+    "True Brands",
+    "Mustard",
+    "Creando Vinilos",
+    "Creando Vinilos",
+    "5am",
+    "Bialetti",
+    "Bialetti",
+    "True Brands ",
+    "ROCKET",
+    "REVEZ",
+    "Interior P",
+    "RIEDEL",
+    "BRV Móveis",
+    "OTOTO",
+    "Arthome Textil",
+    "DKO Design SAS",
+    "Sweetmetal",
+    "Sweetmetal ",
+    "Ecomarket Col",
+    "Ecomarket Col ",
+    "RTA",
+    "RTA ",
+    "Cubi",
+    "Decasa",
+    "Masco ",
+    "Masco",
+    "My Home Store",
+    "Mustard",
+    "REX ",
+    "Areas ",
+    "Artways Digital Art ",
+    "Artways Digital Art",
+    "Bertolini",
+    "Leather Republik",
+    "Icónica Home Gallery",
+    "Joseph Joseph",
+    "Joseph Joseph",
+    "Dekosas",
+    "Deconcept",
+    "Cuperz",
+    "DO HOME",
+    "Estudio Fika",
+    "Landik",
+    "Tramontina",
+    "Dr. Browns",
+    "Munchkin",
+    "Dream Baby",
+    "UppaBaby",
+    "Cuery ",
+    "Cuery",
+    "OCHOINFINITO",
+    "Konker",
+    "Modula",
+    "Wefone",
+    "Nutribullet",
+    "ILKO",
+    "Mikasa Store",
+    "Looney Tunes",
+    "DistriHogar",
+    "Stilocafé",
+    "Bodum",
+    "Aelga",
+    "Brabantia",
+    "Simply Nature",
+    "RTA",
+    "EspaciosDeko",
+    "Make It Burn",
+    "Colchones Paraíso",
+    "LOL",
+    "Gama Digital",
+    "Love",
+    "Sueña ",
+    "Marrón ",
+    "Spiegelau",
+    "Dia Luz",
+    "Cold Blue ",
+    "Sereno Claro ",
+    "Silver Wood ",
+    "Taupe ",
+    "Egg-Productos De Paz",
+    "Lienxo",
+    "Pilastro",
+    "Maceta Pisa ",
+    "Disney",
+    "Alto Impacto T ",
+    "Zoom Sports",
+    "MAX",
+    "Alto Impacto T M ",
+    "Minions",
+    "Snoopy",
+    "Bugel",
+    "Reflekta",
+    "Emilia B Store",
+    "Ninestars",
+    "Barbie",
+    "HotWheels",
+    "Frida K",
+    "Juanna Deco",
+    "Estudio 28 ",
+    "Urba Home",
+    "Kilner",
+    "Hamilton Beach",
+    "Enkël",
+    "Colsein",
+    "Nanoblock",
+    "Travel Frame",
+    "Multimuebles",
+    "Soye Kids",
+    "Salvavida",
+    "Mr. K Workshop",
+    "Biombo",
+    "Aomais",
+    "Tendencias",
+    "XO By Belucci",
+    "Aora",
+    "D&M La Fábrica",
+    "Frente Roble ",
+    "Biogar",
+    "Hugger Island",
+    "Adazio",
+    "Madera Natural",
+    "Vivo Boreal",
+    "Mítico",
+    "Go Travel",
+    "Tag Me ",
+    "Hogar Venecia",
+    "Marvel",
+    "Arte K",
+    "Souli SAS",
+    "Xhaira",
+    "Estudio 28",
+    "InterAmerican Ware",
+    "Kuhn Rikon",
+    "Store",
+    "Petsmasters",
+    "Crema/Buriti ",
+    "Tramontina",
+    "20/20 Muebles",
+    "Umbra",
+    "Umbra",
+    "Whiteline",
+    "Decoluxe",
+    "Vienes ",
+    "Diajor",
+    "Infinity",
+    "Bergner",
+    "Masterpro",
+    "San Ignacio",
+    "Pyr O Rey",
+    "Libbey ",
+    "Crisa",
+    "Pyr O Rey ",
+    "Libbey",
+    "Renberg",
+    "Thermos",
+    "Bergner ",
+    "Crisa ",
+    "Toral",
+    "Alik diseno",
+    "Essenza ",
+    "BIUM",
+    "So Young",
+    "Stilocafe",
+    "Maclaren",
+    "Wonder Woman",
+    "Joseph Joseph ",
+    "Paw Patrol",
+    "Frozen",
+    "Bike Surtido T S",
+    "Baby Shark",
+    "Spiderman",
+    "My Little Pony",
+    "Cybex",
+    "DKO DESIGN",
+    "DKO DESIGN",
+    "RTA DESING",
+    "Pajaro Azul ",
+    "Flores Rojas ",
+    "Deconcept ",
+    "Grafito ",
+    "Arena ",
+    "Noce ",
+    "Canela Y Amarillo ",
+    "Rustico ",
+    "Canela ",
+    "Interior P ",
+    "Fulanita Diseno",
+    "Calo Jabones",
+    "Molti",
+    "DKS LAB",
+    "Say No More",
+    "Smart Prom",
+]
+
+
+def brand_list():
+    return BRAND_LIST
+
+
+def find_brand(text) -> list:
+    l = "|".join(BRAND_LIST)
+    regex = r"" + l
+    matches = re.findall(regex, text, flags=re.IGNORECASE)
+    return matches
+
+
+def cargar_marca():
+    products = MagentoProducts.objects.all()
+    print(products)
+    counter = 1
+    for product in products:
+        print(counter)
+        counter = counter + 1
+        # descripcion larga
+        product_name = product.nombre
+        # lista_pais = []
+        if product_name is not None:
+            lista_marca = find_brand(product_name)
+            lista_capitalizada = capitalizar_textos(lista_marca)
+            lista_marca = convertir_lista_en_set(lista_capitalizada)
+            lista_definitiva = lista_marca
+            print(lista_marca)
+            set_definitivo = set(lista_definitiva)
+            product.marca = list(set_definitivo)
+            product.save()
+
+
+def convertir_lista_en_set(lista: list):
+    return set(lista)
+
+
+def capitalizar_textos(lista: list) -> list:
+    lista_capitalizada = []
+    for item in lista:
+        lista_capitalizada.append(item.capitalize())
+    return lista_capitalizada

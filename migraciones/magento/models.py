@@ -109,6 +109,22 @@ class MagentoProducts(models.Model):
         blank=True,
         null=True,
     )
+    medidas = models.JSONField(
+        blank=True,
+        null=True,
+    )
+    pais = models.JSONField(
+        blank=True,
+        null=True,
+    )
+    garantia = models.JSONField(
+        blank=True,
+        null=True,
+    )
+    marca = models.JSONField(
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         """Meta definition for MagentoProducts."""

@@ -16,11 +16,35 @@ class MagentoProductsResource(resources.ModelResource):
 
 class MagentoProductsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_classes = [MagentoProductsResource]
-    list_display = ("entity_id", "sku", "nombre", "cantidad", "color")
+    list_display = (
+        "entity_id",
+        "sku",
+        "nombre",
+        "cantidad",
+        "color",
+        "medidas",
+        "pais",
+        "marca",
+    )
     formfield_overrides = {
         models.JSONField: {"widget": JSONEditorWidget},
     }
-    readonly_fields = ("entity_id", "sku", "nombre", "cantidad")
+    readonly_fields = (
+        "entity_id",
+        "sku",
+        "nombre",
+        "cantidad",
+    )
+    search_fields = (
+        "id",
+        "entity_id",
+        "sku",
+        "nombre",
+        "cantidad",
+        "color",
+        "medidas",
+        "pais",
+    )
 
 
 admin.site.register(MagentoProducts, MagentoProductsAdmin)
